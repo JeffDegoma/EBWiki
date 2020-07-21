@@ -88,10 +88,6 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation
   end
 
-  config.before(:each, type: :request) do
-    host!('localhost:8080')
-  end
-
   config.after(:each, type: :request) do
     Warden.test_reset!
   end
