@@ -35,16 +35,24 @@
 				            	center: { lat: 39.83333, lng: -98.58333 }
 				       		}
 					    );
+					    let group = new H.map.Group();
 					    let svgMarkup = '<svg width="24" height="24" ' +
 						    'xmlns="http://www.w3.org/2000/svg">' +
 						    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
 						    'height="22" /><text x="12" y="18" font-size="12pt" ' +
 						    'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
-						    'fill="white">H</text></svg>';
+						    'fill="white">*</text></svg>';
 						let icon = new H.map.Icon(svgMarkup);
-						let coordinates = [[47.6084921, -122.336407], [37.8249384, -122.2661749], [33.7490987, -84.3901849], [35.6877859, -80.8654534], [28.6553497, -81.3426916], [31.7660338, -102.6675575], [31.7660338, -108.6675575], [41.7488718, -87.640318], [40.6734692, -73.7591312], [38.8960553, -76.926679335]];
+						let coordinates = <%= @cases %>;
+					
 						let createdObjects = coordinates.map(coord => new H.map.Marker({lat: coord[0], lng: coord[1]}, {icon: icon}));
-						createdObjects.forEach(element => map.addObject(element));
+						group.addObjects(createdObjects);
+						map.addObject(group);
+							// get geo bounding box for the group and set it to the map
+						map.getViewModel().setLookAtData({
+						    bounds: group.getBoundingBox()
+						});
+						let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 					</script>
 	    		</div>
 		   	</div>
