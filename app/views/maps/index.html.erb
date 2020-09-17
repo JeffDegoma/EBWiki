@@ -16,7 +16,7 @@
 			<h2 class="page-subheader">Click on the map pins below to learn more.</h2>
 			<div id="markers-on-the-map">
 	    		<div id="map page-header">
-		    		<div style="width: 640px; height: 480px; margin: auto" id="mapContainer"></div>
+		    		<div style="width: 960px; height: 720px; margin: auto" id="mapContainer"></div>
 					<!-- HERE Maps -->
 					<script>
 						let platform = new H.service.Platform({
@@ -35,16 +35,18 @@
 				            	center: { lat: 39.83333, lng: -98.58333 }
 				       		}
 					    );
-					    let group = new H.map.Group();
+				
 						let coordinates = <%= @cases %>;
 					
-						let createdObjects = coordinates.map(coord => new H.map.Marker({lat: coord[0], lng: coord[1]}));
-						group.addObjects(createdObjects);
-						map.addObject(group);
-							// get geo bounding box for the group and set it to the map
-						map.getViewModel().setLookAtData({
-						    bounds: group.getBoundingBox()
-						});
+						let createdObjects = coordinates.map(coord => new H.clustering.DataPoint(coord[0], coord[1]));
+						let clusteredDataProvider = new H.clustering.Provider(createdObjects);
+						// Create a layer that includes the data provider and its data points: 
+						let layer = new H.map.layer.ObjectLayer(clusteredDataProvider);
+						
+						// Add the layer to the map:
+						map.addLayer(layer);
+						
+						window.addEventListener('resize', () => map.getViewPort().resize());
 						let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 					</script>
 	    		</div>

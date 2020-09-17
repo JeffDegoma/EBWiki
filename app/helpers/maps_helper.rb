@@ -7,7 +7,7 @@ module MapsHelper
 
     if cases.blank?
       cases = Case.all.select do |this_case|
-        this_case.latitude.present? && this_case.longitude.present
+        this_case.latitude.present? && this_case.longitude.present?
       end.to_json
       $redis.set('cases', cases)
       $redis.expire('cases', 2.hour.to_i)
