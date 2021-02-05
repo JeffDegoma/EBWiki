@@ -90,6 +90,7 @@ RSpec.configure do |config|
 
   config.after(:each, type: :request) do
     Warden.test_reset!
+    host!('www.example.com')
   end
 
   config.before(:each, type: :feature) do
